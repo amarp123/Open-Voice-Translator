@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OpenVoice Translator</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <h1>OpenVoice Translator</h1>
+    <!-- Language selection -->
+    <label for="input-language">Input Language:</label>
+    <select id="input-language">
+        <option value="en-IN">English</option>
+        <option value="hi-IN">Hindi</option>
+        <option value="kn-IN">Kannada</option>
+    </select>
+    <label for="output-language">Output Language:</label>
+    <select id="output-language">
+        <option value="en">English</option>
+        <option value="hi">Hindi</option>
+        <option value="kn">Kannada</option>
+        <option value="ta">Tamil</option>
+    </select>
+    <!-- Speech recognition and translation -->
+    <button id="start-button">Start Speaking</button>
+    <div id="output"></div>
+    <button id="translate-button">Translate</button>
+    <div id="translated-output"></div>
+    <!-- Dark mode toggle -->
+    <button id="toggle-dark-mode">Toggle Dark Mode</button>
+    <!-- History button and section -->
+    <button id="view-history-button">View History</button>
+    <div id="history-section" style="display: none;">
+        <h2>Translation History</h2>
+        <ul id="history-list"></ul>
+    </div>
+    <script src="app.js"></script>
+</body>
+</html>
