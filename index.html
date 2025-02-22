@@ -1,43 +1,46 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>OpenVoice Translator</title>
-    <link rel="stylesheet" href="styles.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>OpenVoice Translator</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap" rel="stylesheet">
 </head>
 <body>
-    <h1>OpenVoice Translator</h1>
+  <div class="container">
+    <h1 class="text-center mb-4">OpenVoice Translator</h1>
     <!-- Language selection -->
     <label for="input-language">Input Language:</label>
-    <select id="input-language">
-        <option value="en-IN">English</option>
-        <option value="hi-IN">Hindi</option>
-        <option value="kn-IN">Kannada</option>
-        <option value="ta-IN">Tamil</option>
-        <option value="te-IN">Telugu</option>
+    <select id="input-language" class="form-control">
+      <option value="en">English</option>
+      <option value="hi">Hindi</option>
+      <option value="kn">Kannada</option>
+      <option value="ta">Tamil</option>
     </select>
     <label for="output-language">Output Language:</label>
-    <select id="output-language">
-        <option value="en">English</option>
-        <option value="hi">Hindi</option>
-        <option value="kn">Kannada</option>
-        <option value="ta">Tamil</option>
-        <option value="te">Telugu</option>
+    <select id="output-language" class="form-control">
+      <option value="en">English</option>
+      <option value="hi">Hindi</option>
+      <option value="kn">Kannada</option>
+      <option value="ta">Tamil</option>
     </select>
     <!-- Speech recognition and translation -->
-    <button id="start-button">Start Speaking</button>
-    <div id="output"></div>
-    <button id="translate-button">Translate</button>
-    <div id="translated-output"></div>
+    <button id="start-button" class="btn btn-primary mt-3">Start Speaking</button>
+    <div id="output" class="mt-3"></div>
+    <button id="translate-button" class="btn btn-success mt-3">Translate</button>
+    <div id="translated-output" class="mt-3"></div>
     <!-- Dark mode toggle -->
-    <button id="toggle-dark-mode">Toggle Dark Mode</button>
+    <button id="toggle-dark-mode" class="btn btn-secondary mt-3">Toggle Dark Mode</button>
     <!-- History button and section -->
-    <button id="view-history-button">View History</button>
-    <div id="history-section" style="display: none;">
-        <h2>Translation History</h2>
-        <ul id="history-list"></ul>
+    <button id="view-history-button" class="btn btn-info mt-3">View History</button>
+    <button id="clear-history-button" class="btn btn-danger mt-3">Clear History</button>
+    <div id="history-section" style="display: none;" class="mt-4">
+      <h2>Translation History</h2>
+      <ul id="history-list"></ul>
     </div>
-    <script src="app.js"></script>
+  </div>
+  <script src="app.js"></script>
 </body>
 </html>
