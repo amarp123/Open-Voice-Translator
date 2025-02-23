@@ -59,19 +59,31 @@ translateButton.addEventListener('click', async () => {
   const textToTranslate = output.textContent;
   const fromLanguage = inputLanguageSelect.value.split('-')[0]; // Extract standard language code
   const toLanguage = outputLanguageSelect.value;
+  let mode = document.getElementById('translation-mode').value;
+  
+  // Check for network connectivity
+  if (!navigator.onLine) {
+    mode = 'offline';
+    console.warn('No internet connection detected. Switching to offline mode.');
+  }
+
   console.log(`Text to Translate: ${textToTranslate}`);
   console.log(`From Language: ${fromLanguage}`);
   console.log(`To Language: ${toLanguage}`);
-  if (!textToTranslate || !fromLanguage || !toLanguage) {
-    console.error('Text to translate, from language, or to language is missing');
+  console.log(`Mode: ${mode}`);
+  
+  if (!textToTranslate || !fromLanguage || !toLanguage || !mode) {
+    console.error('Text to translate, from language, to language, or mode is missing');
     return;
   }
+
   try {
     const response = await fetch('http://localhost:3001/translate', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ text: textToTranslate, fromLanguage: fromLanguage, toLanguage: toLanguage })
+      body: JSON.stringify({ text: textToTranslate, fromLanguage: fromLanguage, toLanguage: toLanguage, mode: mode })
     });
+    
     if (response.ok) {
       const result = await response.json();
       console.log(`Translated Text: ${result.translated_text}`);
@@ -83,10 +95,41 @@ translateButton.addEventListener('click', async () => {
       giveVoiceFeedback('Translation failed. Please try again.');
     }
   } catch (error) {
-    console.error('Error:', error);
-    giveVoiceFeedback('An error occurred. Please try again.');
+    if (mode === 'online') {
+      console.warn('Network request failed. Trying offline mode.');
+      // Retry with offline mode if online mode fails
+      mode = 'offline';
+      try {
+        const response = await fetch('http://localhost:3001/translate', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ text: textToTranslate, fromLanguage: fromLanguage, toLanguage: toLanguage, mode: mode })
+        });
+
+        if (response.ok) {
+          const result = await response.json();
+          console.log(`Translated Text: ${result.translated_text}`);
+          translatedOutput.textContent = result.translated_text;
+          saveToHistory(textToTranslate, result.translated_text);
+          giveVoiceFeedback(`Translation completed. The translated text is ${result.translated_text}`);
+        } else {
+          console.error(`Translation failed: ${response.statusText}`);
+          giveVoiceFeedback('Translation failed. Please try again.');
+        }
+      } catch (retryError) {
+        console.error('Offline mode also failed:', retryError);
+        giveVoiceFeedback('An error occurred. Please try again.');
+      }
+    } else {
+      console.error('Error:', error);
+      giveVoiceFeedback('An error occurred. Please try again.');
+    }
   }
 });
+
+
+
+
 
 
 // Save Translation to History
@@ -116,3 +159,8 @@ clearHistoryButton.addEventListener('click', () => {
   historyList.innerHTML = '';
   giveVoiceFeedback('Translation history has been cleared.');
 });
+
+
+
+
+
