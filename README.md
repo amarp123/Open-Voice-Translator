@@ -26,5 +26,5 @@ Open Voice Translator is a web application that enables users to translate spoke
 ## Installation Instructions
 1. **Clone the Repository:**
    ```sh
-   git clone https://github.com/your-username/open-voice-translator.git
+   git clone https://github.com/amarp123/Open-Voice-Translator.git
    cd open-voice-translator
