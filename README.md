@@ -17,6 +17,7 @@ Open Voice Translator is a web application that enables users to translate spoke
 - HTML
 - CSS
 - JavaScript
+- Bootstrap
 - Node.js
 - Express.js
 - MongoDB
