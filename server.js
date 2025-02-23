@@ -13,33 +13,40 @@ app.use(bodyParser.json());
 
 // Define the translation endpoint
 app.post('/translate', (req, res) => {
-    const { text, outputLanguage } = req.body;
-    console.log('Received Text:', text);
-    console.log('Output Language:', outputLanguage);
-
-    if (text && outputLanguage) {
-        const fromLang = 'en'; // This can be dynamic if required
-        const command = `python translation_script.py "${text}" ${fromLang} ${outputLanguage}`;
-        console.log('Executing Command:', command);
-        exec(command, (error, stdout, stderr) => {
-            if (error) {
-                console.error(`Translation error: ${error.message}`);
-                return res.status(500).json({ error: 'Translation failed' });
-            }
-            if (stderr) {
-                console.error(`Translation stderr: ${stderr}`);
-                return res.status(500).json({ error: 'Translation failed' });
-            }
-            console.log('Translated Text:', stdout.trim());
-            res.json({ translated_text: stdout.trim() });
-        });
-    } else {
-        res.status(400).json({ error: 'Text to translate or output language is missing' });
-    }
+  const { text, fromLanguage, toLanguage, mode } = req.body;
+  console.log('Request Body:', req.body);
+  console.log('Received Text:', text);
+  console.log('From Language:', fromLanguage);
+  console.log('To Language:', toLanguage);
+  console.log('Mode:', mode);
+  if (text && fromLanguage && toLanguage && mode) {
+    const command = `python translation_script.py "${text}" ${fromLanguage} ${toLanguage} ${mode}`;
+    console.log('Executing Command:', command);
+    exec(command, (error, stdout, stderr) => {
+      if (error) {
+        console.error(`Translation error: ${error.message}`);
+        return res.status(500).json({ error: 'Translation failed', details: error.message });
+      }
+      if (stderr) {
+        console.error(`Translation stderr: ${stderr}`);
+        return res.status(500).json({ error: 'Translation failed', details: stderr });
+      }
+      console.log('Translated Text:', stdout.trim());
+      res.json({ translated_text: stdout.trim() });
+    });
+  } else {
+    console.error('Text to translate, from language, to language, or mode is missing');
+    res.status(400).json({ error: 'Text to translate, from language, to language, or mode is missing' });
+  }
 });
+
+
+
+
+
 
 // Start the server
 const PORT = process.env.PORT || 3001;
 app.listen(PORT, () => {
-    console.log(`Server is running on port ${PORT}`);
+  console.log(`Server is running on port ${PORT}`);
 });
